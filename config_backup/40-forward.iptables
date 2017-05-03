@@ -1,0 +1,18 @@
+#!/bin/bash
+#---mangle FORWARD---#
+#
+#---filter FORWARD---#
+iptables	-t filter	-A FORWARD	-i enp2s0 	-o enp3s7			-j REJECT
+iptables	-t filter	-A FORWARD	-i enp2s0 	-o enp2s0			-j REJECT
+iptables	-t filter	-A FORWARD	-i enp3s7	-o enp2s0			-j REJECT
+iptables	-t filter	-A FORWARD	-i enp3s7	-o enp3s7			-j REJECT
+iptables 	-t filter	-A FORWARD	-s 192.168.2.0/24				-j ACCEPT
+iptables	-t filter	-A FORWARD	-m state	--state RELATED,ESTABLISHED	-j ACCEPT
+iptables	-t filter	-A FORWARD	-p tcp	-m multiport	--destination-port \
+						20,21,80,427,5900,548,554,3389,7227,5060,22,443	-j ACCEPT
+iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
+									10000:20000		-j ACCEPT
+iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
+									5060,5900		-j ACCEPT
+iptables	-t filter	-A FORWARD	-m limit --limit 5/m	-j LOG --log-prefix "FORWARD REJECTED: "
+iptables	-t filter	-A FORWARD							-j REJECT

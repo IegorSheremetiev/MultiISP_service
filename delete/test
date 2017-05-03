@@ -1,0 +1,8 @@
+#!/bin/bash
+. /etc/iegor_router/preconfig
+echo $MAIN_IF
+. /etc/iegor_router/tests/00
+for FILE in /etc/iegor_router/tests/*; do
+	echo $FILE
+	$FILE
+done

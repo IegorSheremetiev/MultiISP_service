@@ -1,0 +1,14 @@
+[Unit]
+Description=Daemon checks your internet connections for two ISPs
+After=network.target
+After=iegor_router.service
+
+[Service]
+ExecStart=/etc/iegor_router/check.interfaces
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill $MAINPID
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

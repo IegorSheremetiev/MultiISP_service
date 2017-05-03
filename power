@@ -1,0 +1,18 @@
+#/bin/bash
+if  [ $# -eq 1 ]; then
+	if [ $1 = "shutdown" ]; then
+		echo -e "Shutdown \t$(date)" >> /etc/iegor_router/power.log
+	else
+	if [ $1 = "start" ]; then
+		echo -e "Start \t\t$(date)" >> /etc/iegor_router/power.log
+	else
+		echo -e "$(date) \t Script mode not have been provided..." >> /etc/iegor_router/script_fail.log
+		echo "Script mode not have been provided..." 
+		echo "Use SHUTDOWN or START (in lower case)"
+	fi
+	fi
+else 
+	echo -e "$(date) \t Script mode not have been provided..." >> /etc/iegor_router/script_fail.log
+	echo "Script mode not have been provided..." 
+	echo "Use SHUTDOWN or START (in lower case)"
+fi

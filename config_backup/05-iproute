@@ -1,0 +1,29 @@
+#!/bin/bash
+#Load variables
+/etc/iegor_router/preconfig
+#Delete all default routes from custom tables
+GWS=$(ip route | grep -c default)
+for (( c=0; c<$GWS; c++ ))
+do
+	ip route delete default
+done
+ip route add default via 77.88.202.137 dev enp3s7 proto static
+#
+#Fill tables with known routes in table ISP1
+ip route flush table ISP1
+ip route add 127.0.0.0/8 dev lo scope link table ISP1
+ip route add 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 table ISP1
+ip route add 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 table ISP1
+ip route add 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 table ISP1
+ip route add default via 92.60.186.110 dev enp2s0 proto static table ISP1
+#
+#Fill tables with known routes in table ISP2
+ip route flush table ISP2
+ip route add 127.0.0.0/8 dev lo scope link table ISP2
+ip route add 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 table ISP2
+ip route add 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 table ISP2
+ip route add 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 table ISP2
+ip route add default via 77.88.202.137 dev enp3s7 proto static table ISP2
+#
+#Save what we have
+ip route show > /etc/iegor_router/iproute.log

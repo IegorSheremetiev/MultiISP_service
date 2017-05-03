@@ -1,0 +1,83 @@
+#!/bin/bash
+
+#Previous state
+PREVMAINIF=0
+PREVBACKIF=0
+. /etc/iegor_router/preconfig
+echo "###" >> /etc/iegor_router/log
+echo "Start checking $(date)" >> /etc/iegor_router/log
+while true; do
+	#Test for connection on main interface
+	ping -c 3 8.8.8.8 -I $MAIN_IF -m 1 > /dev/null
+	if [[ $? -ne 0 ]]; then 
+		MAINIF=0
+	else
+		MAINIF=1
+	fi
+
+	#Test for connection on backUP interface
+	ping -c 3 8.8.8.8 -I $BACK_IF -m 2 > /dev/null
+	if [[ $? -ne 0 ]]; then 
+		BACKIF=0
+	else
+		BACKIF=1
+	fi
+
+	###########################################################################
+	###									###
+	###	There are 4 states						###
+	###	(MAINIF == 0) && (BACKIF == 0)	No internet, no routes		###
+	###	(MAINIF == 0) && (BACKIF == 1)	Only backup channel works	###
+	###	(MAINIF == 1) && (BACKIF == 0)	Only main channel works		###
+	###	(MAINIF == 1) && (BACKIF == 1)  Both channel works		###
+	###									###
+	###########################################################################
+
+	#First of all check if current values differ form previous
+	if [[ ("$MAINIF" != "$PREVMAINIF") || ("$BACKIF" != "$PREVBACKIF") ]]; then
+		#If true then lets do changes
+		echo "###" >> /etc/iegor_router/log
+		echo "   States have been changed $(date)" >> /etc/iegor_router/log
+		#Delete default gateways
+		MAINGW=$(ip route show | grep -c default)
+		for (( c=0; c<$MAINGW; c++ ))
+		do
+			ip route delete default
+		done
+		
+		if [[ ("$MAINIF" == "1") && ("$BACKIF" == "1") ]]; then
+			echo "###" >> /etc/iegor_router/log
+			echo "Now both connection are work!!!" >> /etc/iegor_router/log
+			echo "###" >> /etc/iegor_router/log
+			ip route add default scope global \
+			nexthop via $MAIN_GW dev $MAIN_IF weight $MAIN_WT \
+			nexthop via $BACK_GW dev $BACK_IF weight $BACK_WT
+			ip route show >> /etc/iegor_router/log
+
+		elif [[ ("$MAINIF" == "1") && ("$BACKIF" == "0") ]]; then
+			echo "###" >> /etc/iegor_router/log
+			echo "Main channel still works, but backup channel is died." >> /etc/iegor_router/log
+			echo "###" >> /etc/iegor_router/log
+			ip route add default via $MAIN_GW dev $MAIN_IF proto static
+			ip route show >> /etc/iegor_router/log
+
+		elif [[ ("$MAINIF" == "0") && ("$BACKIF" == "1") ]]; then
+			echo "###" >> /etc/iegor_router/log
+			echo "WOW!!! Main channel is died, but we have backup channel." >> /etc/iegor_router/log
+			echo "###" >> /etc/iegor_router/log
+			ip route add default via $BACK_GW dev $BACK_IF proto static
+			ip route show >> /etc/iegor_router/log
+
+		else
+			echo "###" >> /etc/iegor_router/log
+			echo "Bad, no one interface is working..." >> /etc/iegor_router/log
+		fi
+
+		#Write New states into Prev state
+		PREVMAINIF=$MAINIF
+		PREVBACKIF=$BACKIF
+	fi
+	
+	#Wait for 1 seconds
+	sleep 2
+done

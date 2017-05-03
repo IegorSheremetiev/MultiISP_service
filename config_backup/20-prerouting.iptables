@@ -1,0 +1,37 @@
+#!/bin/bash
+#---mangle PREROUTING---#
+iptables	-t mangle	-A PREROUTING	-m state --state ESTABLISHED,RELATED		-j CONNMARK --restore-mark
+iptables	-t mangle	-A PREROUTING	-s 192.168.2.81	-m state --state NEW		-j CONNMARK --set-mark 1
+iptables        -t mangle       -A PREROUTING   -i enp2s0       -m state --state NEW            -j CONNMARK --set-mark 1
+iptables        -t mangle       -A PREROUTING   -i enp3s7       -m state --state NEW            -j CONNMARK --set-mark 2
+iptables        -t mangle       -A PREROUTING   -m connmark --mark 1                            -j MARK --set-mark 1
+iptables        -t mangle       -A PREROUTING   -m connmark --mark 2                            -j MARK --set-mark 2
+iptables        -t mangle       -A PREROUTING   -m state --state NEW -m connmark ! --mark 0     -j CONNMARK --save-mark
+#
+#---nat PREROUTING---#
+iptables        -t nat          -A PREROUTING   -p tcp --dport 20       -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 21       -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 80       -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 427      -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 548      -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 443      -j DNAT --to-destination 192.168.2.75
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5900     -j DNAT --to-destination 192.168.2.115
+iptables        -t nat          -A PREROUTING   -p tcp --dport 3389     -j DNAT --to-destination 192.168.2.50 
+iptables        -t nat          -A PREROUTING   -p tcp --dport 7227     -j DNAT --to-destination 192.168.2.72
+iptables        -t nat          -A PREROUTING   -p tcp --dport 7515     -j DNAT --to-destination 192.168.2.81:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 7516     -j DNAT --to-destination 192.168.2.81:5060
+iptables        -t nat          -A PREROUTING   -p udp --dport 7516     -j DNAT --to-destination 192.168.2.81:5060
+iptables        -t nat          -A PREROUTING   -p tcp --dport 9922     -j DNAT --to-destination 192.168.2.81:22
+iptables        -t nat          -A PREROUTING   -p udp --dport 5900     -j DNAT --to-destination 192.168.2.112
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8131     -j DNAT --to-destination 192.168.2.131:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8132     -j DNAT --to-destination 192.168.2.132:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8133     -j DNAT --to-destination 192.168.2.133:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8134     -j DNAT --to-destination 192.168.2.134:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8135     -j DNAT --to-destination 192.168.2.135:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 8136     -j DNAT --to-destination 192.168.2.136:80
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5541     -j DNAT --to-destination 192.168.2.131:554
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5542     -j DNAT --to-destination 192.168.2.132:554
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5543     -j DNAT --to-destination 192.168.2.133:554
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5544     -j DNAT --to-destination 192.168.2.134:554
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5545     -j DNAT --to-destination 192.168.2.135:554
+iptables        -t nat          -A PREROUTING   -p tcp --dport 5546	-j DNAT --to-destination 192.168.2.136:554

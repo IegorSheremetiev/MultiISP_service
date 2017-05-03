@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -e /etc/iegor_router/state ]; then
+	check=$(cat /etc/iegor_router/state)
+	if [ "$check" = "1" ]; then
+#		iptable-save > /etc/iegor_router/iptables.failed
+		/etc/iegor_router/iptables/05-iproute
+		echo 0 > /etc/iegor_router/state
+#		shutdown -r now
+	fi
+else
+	echo "file state not found"
+fi

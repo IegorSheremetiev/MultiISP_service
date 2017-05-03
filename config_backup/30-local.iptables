@@ -1,0 +1,20 @@
+#!/bin/bash
+#---mangle INPUT---#
+#
+#---filter INPUT---#
+iptables	-t filter	-A INPUT	-i lo								-j ACCEPT
+#iptables	-t filter	-A INPUT	-p icmp								-j ACCEPT
+iptables	-t filter	-A INPUT	-m state	--state ESTABLISHED,RELATED			-j ACCEPT
+iptables	-t filter	-A INPUT	-s 192.168.2.0/24						-j ACCEPT
+iptables	-t filter	-A INPUT	-s 176.36.87.157						-j ACCEPT
+iptables	-t filter	-A INPUT	! -s 192.168.2.0/24	-p tcp	--dport 22000			-j ACCEPT
+iptables	-t filter	-A INPUT	! -s 192.168.2.0/24	-p icmp --icmp-type echo-request	-j ACCEPT
+iptables	-t filter	-A INPUT	-m limit --limit 5/m						-j LOG \
+											--log-prefix "Somebody wants me: "
+iptables	-t filter	-A INPUT	! -s 192.168.2.0/24						-j REJECT
+#---mangle OUTPUT---#
+iptables	-t mangle	-A OUTPUT	-m state --state ESTABLISHED,RELATED				-j CONNMARK \
+														--restore-mark
+#
+#---filter OUTPUT---#
+iptables	-t filter	-A OUTPUT									-j ACCEPT

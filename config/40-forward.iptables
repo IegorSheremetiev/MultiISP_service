@@ -1,0 +1,19 @@
+#!/bin/bash
+. /etc/iegor_router/preconfig
+#---mangle FORWARD---#
+#
+#---filter FORWARD---#
+iptables	-t filter	-A FORWARD	-i $MAIN_IF 	-o $BACK_IF			-j REJECT
+iptables	-t filter	-A FORWARD	-i $MAIN_IF 	-o $MAIN_IF			-j REJECT
+iptables	-t filter	-A FORWARD	-i $BACK_IF	-o $MAIN_IF			-j REJECT
+iptables	-t filter	-A FORWARD	-i $BACK_IF	-o $BACK_IF			-j REJECT
+iptables 	-t filter	-A FORWARD	-s $INTERNAL_NET				-j ACCEPT
+iptables	-t filter	-A FORWARD	-m state	--state RELATED,ESTABLISHED	-j ACCEPT
+iptables	-t filter	-A FORWARD	-p tcp	-m multiport	--destination-port \
+						20,21,80,427,5900,548,554,3389,7227,5060,22,443	-j ACCEPT
+iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
+									10000:20000		-j ACCEPT
+iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
+									5060,5900		-j ACCEPT
+iptables	-t filter	-A FORWARD	-m limit --limit 5/m	-j LOG --log-prefix "FORWARD REJECTED: "
+iptables	-t filter	-A FORWARD							-j REJECT

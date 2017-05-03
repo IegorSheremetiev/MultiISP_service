@@ -1,0 +1,15 @@
+#!/bin/bash
+iptables	-t mangle 	-F
+iptables	-t mangle 	-X
+iptables	-t nat 		-F
+iptables	-t nat 		-X
+iptables	-t filter 	-F
+iptables	-t filter 	-X
+
+iptables	-P INPUT	DROP
+iptables	-A INPUT	-p tcp	--dport 22000	-j ACCEPT
+iptables	-A INPUT	-i enp3s6		-j ACCEPT
+iptables	-A INPUT \
+		-m state --state ESTABLISHED,RELATED	-j ACCEPT
+iptables	-P OUTPUT	ACCEPT
+iptables	-P FORWARD	ACCEPT

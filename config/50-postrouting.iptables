@@ -1,0 +1,7 @@
+#!/bin/bash
+. /etc/iegor_router/preconfig
+#---mangle POSTROUTING---#
+#
+#---nat POSTROUTING---#
+iptables	-t nat		-A POSTROUTING	-o $MAIN_IF		-j SNAT	--to-source $MAIN_IP
+iptables	-t nat		-A POSTROUTING	-o $BACK_IF		-j SNAT	--to-source $BACK_IP

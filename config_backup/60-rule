@@ -1,0 +1,8 @@
+##!/bin/bash
+#ip rule flush
+
+ip rule add from 92.60.186.96/28 table ISP1
+ip rule add from 77.88.202.136/29 table ISP2
+
+ip rule add fwmark 1 table ISP1
+ip rule add fwmark 2 table ISP2

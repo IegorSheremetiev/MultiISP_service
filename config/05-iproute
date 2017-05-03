@@ -1,0 +1,27 @@
+#!/bin/bash
+. /etc/iegor_router/preconfig
+GWS=$(ip route | grep -c default)
+for (( c=0; c<$GWS; c++ ))
+do
+	ip route delete default
+done
+ip route add default via $MAIN_GW dev $MAIN_IF proto static
+#
+#Fill tables with known routes in table ISP1
+ip route flush table ISP1
+ip route add 127.0.0.0/8 dev lo scope link table ISP1
+ip route add $BACK_NET dev $BACK_IF proto kernel scope link src $BACK_IP table ISP1
+ip route add $MAIN_NET dev $MAIN_IF proto kernel scope link src $MAIN_IP table ISP1
+ip route add $INTERNAL_NET dev $INTERNAL_IF proto kernel scope link src $INTERNAL_IP table ISP1
+ip route add default via $MAIN_GW dev $MAIN_IF proto static table ISP1
+#
+#Fill tables with known routes in table ISP2
+ip route flush table ISP2
+ip route add 127.0.0.0/8 dev lo scope link table ISP2
+ip route add $BACK_NET dev $BACK_IF proto kernel scope link src $BACK_IP table ISP2
+ip route add $MAIN_NET dev $MAIN_IF proto kernel scope link src $MAIN_IP table ISP2
+ip route add $INTERNAL_NET dev $INTERNAL_IF proto kernel scope link src $INTERNAL_IP table ISP2
+ip route add default via $BACK_GW dev $BACK_IF proto static table ISP2
+#
+#Save what we have
+ip route show > /etc/iegor_router/iproute.log

@@ -1,0 +1,5 @@
+#!/bin/bash
+ip rule | grep -Ev '^(0|32766|32767):' | cut -d ":" -f2 > /etc/iegor_router/iprule.set
+while read RULE; do
+	ip rule del $RULE
+done < /etc/iegor_router/iprule.set

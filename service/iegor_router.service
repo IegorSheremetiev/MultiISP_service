@@ -1,0 +1,11 @@
+[Unit]
+Description=Configuration of router and iptables
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/iegor_router/router.start
+ExecStopPost=/etc/iegor_router/router.stop
+
+[Install]
+WantedBy=multi-user.target

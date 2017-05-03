@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#FILENAME=
+for (( c=0; c<$(ip route | grep -c default); c++ )) 
+do
+	echo "Executing $FILENAME..."
+#	$FILENAME
+done

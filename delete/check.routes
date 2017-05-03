@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "Started $(date)" > /etc/iegor_router/log
+while true; do
+	ip route show > /etc/iegor_router/iproute.log2
+	DIFF=$(diff /etc/iegor_router/iproute.log /etc/iegor_router/iproute.log2)
+	if [[ -n $DIFF ]]; then
+		echo "diff $(date)" >> /etc/iegor_router/log
+		echo "$DIFF" >> /etc/iegor_router/log
+		ip route show >> /etc/iegor_router/iproute.log
+	fi
+	sleep 5
+done

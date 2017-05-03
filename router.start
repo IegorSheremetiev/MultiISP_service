@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [[ -e /etc/iegor_router/log ]]; then
+	mv /etc/iegor_router/log /etc/iegor_router/log.prev
+	touch /etc/iegor_router/log
+fi
+
+echo "$(date) Starting service IEGOR_ROUTER..." >> /etc/iegor_router/log
+#Import kernel modules that needed by router
+for MODULE in $(cat /etc/iegor_router/modprobe); do
+	modprobe $MODULE
+	echo "  Loading module $MODULE..." >> /etc/iegor_router/log
+done
+echo "Modules are loaded" >> /etc/iegor_router/log 
+
+#Execute configuration files
+for FILENAME in /etc/iegor_router/config/*; do
+	echo "  Executing $FILENAME..." >> /etc/iegor_router/log
+	$FILENAME
+done
+
+echo "###" >> /etc/iegor_router/log
+echo "###After all" >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###IP route show"	 >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+ip route show >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###IP route show table ISP1"	 >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+ip route show table ISP1 >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###IP route show table ISP2"	 >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+ip route show table ISP2 >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###  iptables filter" >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+iptables -L -v -n -t filter >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###  iptables mangle" >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+iptables -L -v -n -t mangle >> /etc/iegor_router/log
+
+echo "###" >> /etc/iegor_router/log
+echo "###  iptables nat" >> /etc/iegor_router/log
+echo "###" >> /etc/iegor_router/log
+iptables -L -v -n -t nat >> /etc/iegor_router/log
+
+#Start service to control state of interfaces
+. /etc/iegor_router/check.interfaces

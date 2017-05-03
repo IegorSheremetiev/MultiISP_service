@@ -1,0 +1,6 @@
+#!/bin/bash
+#---mangle POSTROUTING---#
+#
+#---nat POSTROUTING---#
+iptables	-t nat		-A POSTROUTING	-o enp2s0		-j SNAT	--to-source 92.60.186.100
+iptables	-t nat		-A POSTROUTING	-o enp3s7		-j SNAT	--to-source 77.88.202.142

@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+. /etc/iegor_router/config/05-iproute
+. /etc/iegor_router/config/10-default.iptables
+. /etc/iegor_router/config/15-default.iprule
