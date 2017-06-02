@@ -10,12 +10,12 @@ iptables        -t mangle       -A PREROUTING   -m connmark --mark 2            
 iptables        -t mangle       -A PREROUTING   -m state --state NEW -m connmark ! --mark 0     -j CONNMARK --save-mark
 #
 #---nat PREROUTING---#
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 20       -j DNAT --to-destination 192.168.2.75
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 21       -j DNAT --to-destination 192.168.2.75
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 80       -j DNAT --to-destination 192.168.2.75
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 427      -j DNAT --to-destination 192.168.2.75
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 548      -j DNAT --to-destination 192.168.2.75
-iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 443      -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 20       -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 21       -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 80       -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 427      -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 548      -j DNAT --to-destination 192.168.2.75
+#iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 443      -j DNAT --to-destination 192.168.2.75
 iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 5900     -j DNAT --to-destination 192.168.2.115
 iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 3389     -j DNAT --to-destination 192.168.2.72 
 iptables        -t nat          -A PREROUTING   ! -s $INTERNAL_NET	-p tcp --dport 7227     -j DNAT --to-destination 192.168.2.72

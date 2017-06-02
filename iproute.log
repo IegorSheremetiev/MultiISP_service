@@ -1,5 +1,4 @@
-default via 92.60.186.110 dev enp2s0 proto static 
-default via 77.88.202.137 dev enp3s7 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+default via 92.60.186.110 dev enp2s0 proto static linkdown 
+77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 linkdown 
+92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 linkdown 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 linkdown 

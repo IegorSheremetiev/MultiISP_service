@@ -1,4 +1,4 @@
-Суб Апр 15 12:41:39 EEST 2017 Starting service IEGOR_ROUTER...
+Птн Май 12 09:06:46 EEST 2017 Starting service IEGOR_ROUTER...
   Loading module ip_conntrack...
   Loading module nf_nat_sip...
   Loading module nf_conntrack_sip...
@@ -16,10 +16,11 @@ Modules are loaded
 ###
 ###IP route show
 ###
+default via 77.88.202.137 dev enp3s7 proto static 
 default via 92.60.186.110 dev enp2s0 proto static 
 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 linkdown 
 ###
 ###IP route show table ISP1
 ###
@@ -27,7 +28,7 @@ default via 92.60.186.110 dev enp2s0 proto static
 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 127.0.0.0/8 dev lo scope link 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 linkdown 
 ###
 ###IP route show table ISP2
 ###
@@ -35,7 +36,7 @@ default via 77.88.202.137 dev enp3s7 proto static
 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 127.0.0.0/8 dev lo scope link 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 linkdown 
 ###
 ###  iptables filter
 ###
@@ -135,9 +136,9 @@ Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
     0     0 SNAT       all  --  *      enp2s0  0.0.0.0/0            0.0.0.0/0            to:92.60.186.100
     0     0 SNAT       all  --  *      enp3s7  0.0.0.0/0            0.0.0.0/0            to:77.88.202.142
 ###
-Start checking Суб Апр 15 12:41:39 EEST 2017
+Start checking Птн Май 12 09:06:48 EEST 2017
 ###
-   States have been changed Суб Апр 15 12:41:43 EEST 2017
+   States have been changed Птн Май 12 09:06:52 EEST 2017
 ###
 Now both connection are work!!!
 ###
@@ -148,7 +149,7 @@ default
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
 ###
-   States have been changed Вто Апр 18 01:34:54 EEST 2017
+   States have been changed Вск Май 14 17:42:37 EEST 2017
 ###
 WOW!!! Main channel is died, but we have backup channel.
 ###
@@ -157,7 +158,7 @@ default via 77.88.202.137 dev enp3s7 proto static
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
 ###
-   States have been changed Вто Апр 18 01:35:33 EEST 2017
+   States have been changed Вск Май 14 17:42:44 EEST 2017
 ###
 Now both connection are work!!!
 ###
@@ -168,7 +169,7 @@ default
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
 ###
-   States have been changed Вто Апр 18 03:32:22 EEST 2017
+   States have been changed Пнд Май 15 10:33:05 EEST 2017
 ###
 WOW!!! Main channel is died, but we have backup channel.
 ###
@@ -177,7 +178,7 @@ default via 77.88.202.137 dev enp3s7 proto static
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
 ###
-   States have been changed Вто Апр 18 03:34:37 EEST 2017
+   States have been changed Пнд Май 15 14:21:07 EEST 2017
 ###
 Now both connection are work!!!
 ###
@@ -188,130 +189,53 @@ default
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
 ###
-   States have been changed Чтв Апр 20 19:15:32 EEST 2017
+   States have been changed Чтв Май 18 11:28:25 EEST 2017
+###
+Main channel still works, but backup channel is died.
+###
+default via 92.60.186.110 dev enp2s0 proto static 
+92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+###
+   States have been changed Чтв Май 18 11:33:04 EEST 2017
+###
+Now both connection are work!!!
+###
+default 
+	nexthop via 92.60.186.110  dev enp2s0 weight 1
+	nexthop via 77.88.202.137  dev enp3s7 weight 1
+77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
+92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+###
+   States have been changed Чтв Май 18 15:27:28 EEST 2017
+###
+Main channel still works, but backup channel is died.
+###
+default via 92.60.186.110 dev enp2s0 proto static 
+92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+###
+   States have been changed Чтв Май 18 15:38:18 EEST 2017
+###
+Now both connection are work!!!
+###
+default 
+	nexthop via 92.60.186.110  dev enp2s0 weight 1
+	nexthop via 77.88.202.137  dev enp3s7 weight 1
+77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
+92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
+192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
+###
+   States have been changed Суб Май 27 11:36:41 EEST 2017
+###
+Bad, no one interface is working...
+###
+   States have been changed Суб Май 27 11:37:24 EEST 2017
 ###
 Main channel still works, but backup channel is died.
 ###
 default via 92.60.186.110 dev enp2s0 proto static 
 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Апр 20 19:21:32 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Вто Апр 25 09:01:28 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Вто Апр 25 09:06:39 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Вто Апр 25 09:38:50 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Вто Апр 25 09:38:57 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Срд Апр 26 03:44:17 EEST 2017
-###
-WOW!!! Main channel is died, but we have backup channel.
-###
-default via 77.88.202.137 dev enp3s7 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Срд Апр 26 05:40:43 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Срд Апр 26 20:07:27 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Срд Апр 26 20:07:33 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Птн Апр 28 03:49:25 EEST 2017
-###
-WOW!!! Main channel is died, but we have backup channel.
-###
-default via 77.88.202.137 dev enp3s7 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Птн Апр 28 03:49:31 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Вск Апр 30 07:16:29 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
