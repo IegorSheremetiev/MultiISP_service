@@ -1,4 +1,4 @@
-Вск Май 28 14:55:53 EEST 2017 Starting service IEGOR_ROUTER...
+Птн Июн  2 19:22:53 EEST 2017 Starting service IEGOR_ROUTER...
   Loading module ip_conntrack...
   Loading module nf_nat_sip...
   Loading module nf_conntrack_sip...
@@ -57,9 +57,9 @@ Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
     0     0 REJECT     all  --  enp2s0 enp2s0  0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
     0     0 REJECT     all  --  enp3s7 enp2s0  0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
     0     0 REJECT     all  --  enp3s7 enp3s7  0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
-    1    99 ACCEPT     all  --  *      *       192.168.2.0/24       0.0.0.0/0           
-    1   242 ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED
-    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport dports 20,21,80,427,5900,548,554,3389,7227,5060,22,443
+    0     0 ACCEPT     all  --  *      *       192.168.2.0/24       0.0.0.0/0           
+    0     0 ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport dports 80,5900,554,3389,7227,5060
     0     0 ACCEPT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport dports 10000:20000
     0     0 ACCEPT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport dports 5060,5900
     0     0 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0            limit: avg 5/min burst 5 LOG flags 0 level 4 prefix "FORWARD REJECTED: "
@@ -71,41 +71,35 @@ Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
 ###
 ###  iptables mangle
 ###
-Chain PREROUTING (policy ACCEPT 6 packets, 2139 bytes)
+Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
-    9  2127 CONNMARK   all  --  *      *       0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED CONNMARK restore
-    1    81 CONNMARK   all  --  *      *       192.168.2.81         0.0.0.0/0            state NEW CONNMARK set 0x1
-    1    52 CONNMARK   all  --  enp2s0 *       0.0.0.0/0            0.0.0.0/0            state NEW CONNMARK set 0x1
+    0     0 CONNMARK   all  --  *      *       0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED CONNMARK restore
+    0     0 CONNMARK   all  --  *      *       192.168.2.81         0.0.0.0/0            state NEW CONNMARK set 0x1
+    1    48 CONNMARK   all  --  enp2s0 *       0.0.0.0/0            0.0.0.0/0            state NEW CONNMARK set 0x1
     0     0 CONNMARK   all  --  enp3s7 *       0.0.0.0/0            0.0.0.0/0            state NEW CONNMARK set 0x2
-   11  2260 MARK       all  --  *      *       0.0.0.0/0            0.0.0.0/0            connmark match  0x1 MARK set 0x1
+    1    48 MARK       all  --  *      *       0.0.0.0/0            0.0.0.0/0            connmark match  0x1 MARK set 0x1
     0     0 MARK       all  --  *      *       0.0.0.0/0            0.0.0.0/0            connmark match  0x2 MARK set 0x2
-    2   133 CONNMARK   all  --  *      *       0.0.0.0/0            0.0.0.0/0            state NEW connmark match ! 0x0 CONNMARK save
+    1    48 CONNMARK   all  --  *      *       0.0.0.0/0            0.0.0.0/0            state NEW connmark match ! 0x0 CONNMARK save
 
 Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
 
-Chain FORWARD (policy ACCEPT 6 packets, 2139 bytes)
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
 
 Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
     0     0 CONNMARK   all  --  *      *       0.0.0.0/0            0.0.0.0/0            state RELATED,ESTABLISHED CONNMARK restore
 
-Chain POSTROUTING (policy ACCEPT 6 packets, 2139 bytes)
+Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
 ###
 ###  iptables nat
 ###
 Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
  pkts bytes target     prot opt in     out     source               destination         
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:20 to:192.168.2.75
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:21 to:192.168.2.75
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:80 to:192.168.2.75
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:427 to:192.168.2.75
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:548 to:192.168.2.75
-    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:443 to:192.168.2.75
     0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:5900 to:192.168.2.115
-    1    52 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:3389 to:192.168.2.72
+    0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:3389 to:192.168.2.72
     0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:7227 to:192.168.2.72
     0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:7515 to:192.168.2.81:80
     0     0 DNAT       tcp  --  *      *      !192.168.2.0/24       0.0.0.0/0            tcp dpt:7516 to:192.168.2.81:5060
@@ -136,162 +130,15 @@ Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
     0     0 SNAT       all  --  *      enp2s0  0.0.0.0/0            0.0.0.0/0            to:92.60.186.100
     0     0 SNAT       all  --  *      enp3s7  0.0.0.0/0            0.0.0.0/0            to:77.88.202.142
 ###
-Start checking Вск Май 28 14:55:54 EEST 2017
+Start checking Птн Июн  2 19:22:55 EEST 2017
 ###
-   States have been changed Вск Май 28 14:55:58 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 00:15:46 EEST 2017
-###
-WOW!!! Main channel is died, but we have backup channel.
-###
-default via 77.88.202.137 dev enp3s7 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 00:26:19 EEST 2017
+   States have been changed Птн Июн  2 19:22:59 EEST 2017
 ###
 Now both connection are work!!!
 ###
 default 
 	nexthop via 92.60.186.110  dev enp2s0 weight 1
 	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 00:27:42 EEST 2017
-###
-WOW!!! Main channel is died, but we have backup channel.
-###
-default via 77.88.202.137 dev enp3s7 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 00:28:21 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 03:33:43 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 03:33:49 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 08:16:56 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 08:17:19 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 08:18:49 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 08:36:04 EEST 2017
-###
-Now both connection are work!!!
-###
-default 
-	nexthop via 92.60.186.110  dev enp2s0 weight 1
-	nexthop via 77.88.202.137  dev enp3s7 weight 1
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 08:38:34 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 11:34:33 EEST 2017
-###
-Bad, no one interface is working...
-###
-   States have been changed Чтв Июн  1 11:40:12 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 11:52:09 EEST 2017
-###
-Bad, no one interface is working...
-###
-   States have been changed Чтв Июн  1 11:54:36 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
-77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
-92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
-192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 
-###
-   States have been changed Чтв Июн  1 12:37:55 EEST 2017
-###
-Bad, no one interface is working...
-###
-   States have been changed Чтв Июн  1 12:39:03 EEST 2017
-###
-Main channel still works, but backup channel is died.
-###
-default via 92.60.186.110 dev enp2s0 proto static 
 77.88.202.136/29 dev enp3s7 proto kernel scope link src 77.88.202.142 
 92.60.186.96/28 dev enp2s0 proto kernel scope link src 92.60.186.100 
 192.168.2.0/24 dev enp3s6 proto kernel scope link src 192.168.2.1 

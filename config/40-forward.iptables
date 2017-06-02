@@ -12,7 +12,7 @@ iptables	-t filter	-A FORWARD	-m state	--state RELATED,ESTABLISHED	-j ACCEPT
 #iptables	-t filter	-A FORWARD	-p tcp	-m multiport	--destination-port \
 #						20,21,80,427,5900,548,554,3389,7227,5060,22,443	-j ACCEPT
 iptables	-t filter	-A FORWARD	-p tcp	-m multiport	--destination-port \
-						5900,554,3389,7227,5060	-j ACCEPT
+						80,5900,554,3389,7227,5060	-j ACCEPT
 iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
 									10000:20000		-j ACCEPT
 iptables	-t filter	-A FORWARD	-p udp	-m multiport	--destination-port \
